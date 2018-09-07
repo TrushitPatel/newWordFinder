@@ -1,0 +1,36 @@
+
+%{
+#include<stdio.h>
+int counter=0;
+FILE *out1,*out2,*out3,*out4;
+%}
+%%
+["][^"]*["] {
+				if(counter<25000)
+					{fprintf(out1,"%s",yytext);counter++;}
+				else if(counter<50000)
+					{fprintf(out2,"%s",yytext);counter++;}
+				else if(counter<75000)
+					{fprintf(out3,"%s",yytext);counter++;}
+				else
+					{fprintf(out4,"%s",yytext);counter++;}
+			}
+"|" {}
+%%
+int main()
+{
+	FILE *fp;
+	fp=fopen("concatnatedEexpression.txt","r");
+	out1=fopen("merged1.txt","w");
+	out2=fopen("merged2.txt","w");
+	out3=fopen("merged3.txt","w");
+	out4=fopen("merged4.txt","w");
+	yyin=fp;
+	yylex();
+	printf("%d",counter);
+
+	fclose(fp);
+	return 0;
+}
+
+
